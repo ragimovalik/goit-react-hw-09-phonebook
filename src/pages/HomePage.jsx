@@ -1,5 +1,6 @@
 import { createUseStyles } from 'react-jss';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { getIsLoggedIn } from '../redux/auth/auth-selectors';
 import Container from '../components/Container/Container';
 
@@ -36,8 +37,8 @@ const HomePage = () => {
         {!isLoggedIn && (
           <p className={classes.Paragraph}>
             For using this Phonebook safely please get your own account on{' '}
-            <a href="/registration"> Registration Page</a> or just
-            <a href="/login"> Login</a> if you already have account.
+            <Link to="/registration"> Registration Page</Link> or just
+            <Link to="/login"> Login</Link> if you already have account.
           </p>
         )}
         <p className={classes.Paragraph}>Enjoy :)</p>
