@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter as Router } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -10,13 +10,13 @@ import 'modern-normalize';
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <Router>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <App />
         </PersistGate>
       </Provider>
-    </BrowserRouter>
+    </Router>
   </React.StrictMode>,
   document.getElementById('root'),
 );
