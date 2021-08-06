@@ -12,6 +12,10 @@ const Registration = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
 
+  // useEffect(() => {
+  //   nameFieldRef.current?.focus();
+  // }, []);
+
   const onSubmit = (values, { resetForm }) => {
     setRegistrationData(values);
 
@@ -50,6 +54,7 @@ const Registration = () => {
               label="Name:"
               name="name"
               placeholder="John"
+              hasRef="true"
               // type="text"
               // title="name"
             />

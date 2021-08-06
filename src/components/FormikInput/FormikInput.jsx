@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { useField } from 'formik';
 import PropTypes from 'prop-types';
 import { useStyles } from './FormikInputStyles';
@@ -11,9 +12,14 @@ import { useStyles } from './FormikInputStyles';
   it has been touched (i.e. visited)
 */
 
-const FormikInput = ({ label, ...props }) => {
+const FormikInput = ({ label, hasRef, ...props }) => {
   const [field, meta] = useField(props);
   const classes = useStyles();
+  const inputRef = useRef();
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   return (
     <div className={classes.Form__input__wrap}>
@@ -21,6 +27,7 @@ const FormikInput = ({ label, ...props }) => {
       <input
         id={props.id || props.name}
         className={classes.Form__input}
+        ref={hasRef && inputRef}
         {...field}
         {...props}
       />
@@ -37,6 +44,7 @@ const FormikInput = ({ label, ...props }) => {
 FormikInput.defaultProps = {
   label: 'Label -->',
   type: 'text',
+  hasRef: null,
 };
 
 FormikInput.propTypes = {
@@ -46,6 +54,7 @@ FormikInput.propTypes = {
   placeholder: PropTypes.string,
   title: PropTypes.string,
   name: PropTypes.string.isRequired,
+  hasRef: PropTypes.string,
 };
 
 export default FormikInput;

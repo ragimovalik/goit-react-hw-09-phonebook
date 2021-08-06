@@ -73,12 +73,7 @@ export const getCurrentUser = () => async (dispatch, getState) => {
     auth: { token: persistedToken },
   } = getState();
 
-  console.log('token', token);
-  console.log('persisted token', persistedToken);
-
-  if (!persistedToken) {
-    return;
-  }
+  if (!persistedToken) return;
 
   token.set(persistedToken);
 
@@ -89,7 +84,9 @@ export const getCurrentUser = () => async (dispatch, getState) => {
 
     dispatch(actions.getCurrentSuccess(response.data));
   } catch (error) {
-    toast.error(error?.message);
+    error.response.status === 401
+      ? toast.error('Please Log In')
+      : toast.error(error?.message);
 
     dispatch(actions.getCurrentError(error.message));
   }

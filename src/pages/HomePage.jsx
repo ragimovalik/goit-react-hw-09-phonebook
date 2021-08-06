@@ -29,7 +29,6 @@ const HomePage = () => {
 
       <div className={classes.Page__box}>
         <p className={classes.Paragraph}>
-          {' '}
           This application makes easier to save your contacts and gets them
           using your browser.
         </p>

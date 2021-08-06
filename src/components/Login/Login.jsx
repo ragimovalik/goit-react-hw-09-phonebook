@@ -47,6 +47,7 @@ const Login = () => {
             label="Email:"
             type="email"
             placeholder="test@test.com"
+            hasRef="yes"
           />
           <FormikInput
             name="password"
