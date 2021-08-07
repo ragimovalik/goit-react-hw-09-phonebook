@@ -11,13 +11,8 @@ import styles from './Form.module.css';
 const initialState = { name: '', number: '', showAddForm: false };
 
 const reducer = (state, action) => {
-  // if (action.type === 'initial') return initialState;
-
-  // return { ...state, [action.type]: action.payload };
-
   switch (action.type) {
     case 'initial':
-      // return initialState;
       return { ...state, name: '', number: '' };
 
     case 'showAddForm':
@@ -30,8 +25,6 @@ const reducer = (state, action) => {
 
 const Form = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-
-  // const [showAddForm, setShowAddForm] = useState(false);
 
   const items = useSelector(getContacts);
   const authDispatch = useDispatch();
@@ -62,7 +55,6 @@ const Form = () => {
     });
   };
 
-  // const onAddFormShow = () => setShowAddForm(prevState => !prevState);
   const onAddFormShow = () => dispatch({ type: 'showAddForm' });
 
   return (
