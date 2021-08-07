@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useReducer, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-hot-toast';
 import { MdAdd, MdRemove } from 'react-icons/md';
@@ -8,23 +8,23 @@ import { getContacts } from '../../redux/contacts/contacts-selectors';
 import InputBox from '../InputBox/InputBox';
 import styles from './Form.module.css';
 
+const initialState = { name: '', number: '' };
+
+const reducer = (state, action) => {
+  if (action.type === 'initial') return initialState;
+
+  return { ...state, [action.type]: action.payload };
+};
+
 const Form = () => {
-  const [localState, setLocalState] = useState({ name: '', number: '' });
+  const [state, dispatch] = useReducer(reducer, initialState);
+
   const [showAddForm, setShowAddForm] = useState(false);
   const items = useSelector(getContacts);
-  const dispatch = useDispatch();
-
-  const setDefault = () =>
-    setLocalState({
-      name: '',
-      number: '',
-    });
+  const authDispatch = useDispatch();
 
   const onInputChange = ({ target: { name, value } }) => {
-    return setLocalState(prevState => ({
-      ...prevState,
-      [name]: value,
-    }));
+    return dispatch({ type: name, payload: value });
   };
 
   const contactsChecker = name => {
@@ -36,15 +36,17 @@ const Form = () => {
   const handleSubmit = event => {
     event.preventDefault();
 
-    const { name, number } = localState;
+    const { name, number } = state;
 
     const newContact = { name, number };
 
     contactsChecker(name)
       ? toast(`${name} is already in contacts`)
-      : dispatch(addContact(newContact));
+      : authDispatch(addContact(newContact));
 
-    setDefault();
+    dispatch({
+      type: 'initial',
+    });
   };
 
   const onAddFormShow = () => setShowAddForm(prevState => !prevState);
@@ -79,7 +81,7 @@ const Form = () => {
             pattern={'text'}
             placeholder={'Name'}
             required={true}
-            value={localState.name}
+            value={state.name}
             onChange={onInputChange}
           />
 
@@ -95,7 +97,7 @@ const Form = () => {
             pattern={'phone'}
             placeholder={'Phone Number'}
             required={true}
-            value={localState.number}
+            value={state.number}
             onChange={onInputChange}
           />
           <button className={styles.Form__btn} type="submit">
