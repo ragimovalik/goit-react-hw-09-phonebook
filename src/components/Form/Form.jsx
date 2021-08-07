@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react';
+import React, { useReducer } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-hot-toast';
 import { MdAdd, MdRemove } from 'react-icons/md';
@@ -8,18 +8,31 @@ import { getContacts } from '../../redux/contacts/contacts-selectors';
 import InputBox from '../InputBox/InputBox';
 import styles from './Form.module.css';
 
-const initialState = { name: '', number: '' };
+const initialState = { name: '', number: '', showAddForm: false };
 
 const reducer = (state, action) => {
-  if (action.type === 'initial') return initialState;
+  // if (action.type === 'initial') return initialState;
 
-  return { ...state, [action.type]: action.payload };
+  // return { ...state, [action.type]: action.payload };
+
+  switch (action.type) {
+    case 'initial':
+      // return initialState;
+      return { ...state, name: '', number: '' };
+
+    case 'showAddForm':
+      return { ...state, showAddForm: !state.showAddForm };
+
+    default:
+      return { ...state, [action.type]: action.payload };
+  }
 };
 
 const Form = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const [showAddForm, setShowAddForm] = useState(false);
+  // const [showAddForm, setShowAddForm] = useState(false);
+
   const items = useSelector(getContacts);
   const authDispatch = useDispatch();
 
@@ -49,7 +62,8 @@ const Form = () => {
     });
   };
 
-  const onAddFormShow = () => setShowAddForm(prevState => !prevState);
+  // const onAddFormShow = () => setShowAddForm(prevState => !prevState);
+  const onAddFormShow = () => dispatch({ type: 'showAddForm' });
 
   return (
     <div className={styles.Form__wrap}>
@@ -63,11 +77,11 @@ const Form = () => {
           }}
         >
           <button className={styles.Add__btn} onClick={onAddFormShow}>
-            {showAddForm ? <MdRemove /> : <MdAdd />}
+            {state.showAddForm ? <MdRemove /> : <MdAdd />}
           </button>
         </IconContext.Provider>
       </div>
-      {showAddForm && (
+      {state.showAddForm && (
         <form className={styles.Form} onSubmit={handleSubmit}>
           <InputBox
             labelText={'Name'}
